@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"regexp"
+	// "regexp"
 )
 
 var out io.Writer
@@ -15,7 +15,7 @@ func init() {
 }
 
 // Does the grepping
-func grep(r io.Reader, re *regexp.Regexp, opt *grepOpt) (int, error) {
+func grep(r io.Reader, m MultiMatcher, opt *grepOpt) (int, error) {
 	buf := bufio.NewReader(r)
 	n := 1
 	count := 0
@@ -28,7 +28,7 @@ func grep(r io.Reader, re *regexp.Regexp, opt *grepOpt) (int, error) {
 			return 0, err
 		}
 		line := string(b)
-		if re.MatchString(line) {
+		if m.MatchString(line) {
 			count++
 			if opt.optFilename {
 				fmt.Fprintf(out, "%s:", opt.filename)
