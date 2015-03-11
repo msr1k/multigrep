@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"regexp"
 
 	"github.com/koron/gomigemo/embedict"
 	"github.com/koron/gomigemo/migemo"
@@ -61,16 +62,30 @@ func _main() int {
 	res := make( []PolarizedMultiMatcher, 0, 10 )
 	patterns := strings.Split(flag.Arg(0), separator)
 	for _, pat := range patterns {
+
 		polar := true
 		if pat[0] == '!' {
 			polar = false
 			pat = pat[1:]
 		}
-		re, err := migemo.Compile(dict, pat)
+
+		var re MultiMatcher 
+		var err error
+		switch pat[0:2] {
+		case "r:": // Regexp
+			re, err = regexp.Compile(pat[2:])
+		case "m:": // Migemo
+			re, err = migemo.Compile(dict, pat[2:])
+		case "s:": // String Contains
+			re = StringMatcher{ str: pat[2:] }
+		default:
+			re = StringMatcher{ str: pat }
+		}
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return 2
 		}
+
 		res = append( res, PolarizedMultiMatcher{ matcher: re, polar: polar } )
 	}
 
