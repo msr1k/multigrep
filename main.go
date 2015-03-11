@@ -61,12 +61,17 @@ func _main() int {
 	res := make( []PolarizedMultiMatcher, 0, 10 )
 	patterns := strings.Split(flag.Arg(0), separator)
 	for _, pat := range patterns {
+		polar := true
+		if pat[0] == '!' {
+			polar = false
+			pat = pat[1:]
+		}
 		re, err := migemo.Compile(dict, pat)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return 2
 		}
-		res = append( res, PolarizedMultiMatcher{ matcher: re, polar: true } )
+		res = append( res, PolarizedMultiMatcher{ matcher: re, polar: polar } )
 	}
 
 	opt := &grepOpt{
