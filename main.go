@@ -60,7 +60,7 @@ func _main() int {
 	}
 
 	res := make( []PolarizedMultiMatcher, 0, 10 )
-	patterns := strings.Split(flag.Arg(0), separator)
+	patterns := strings.Split(strings.Trim(flag.Arg(0), " "), separator)
 	for _, pat := range patterns {
 
 		polar := true
