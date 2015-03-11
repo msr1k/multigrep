@@ -44,7 +44,6 @@ func grep(r io.Reader, pmms []PolarizedMultiMatcher, opt *grepOpt) (int, error) 
 				fmt.Fprintf(out, "%d:", n)
 			}
 			fmt.Fprintln(out, line)
-			break
 		}
 		n++
 	}
