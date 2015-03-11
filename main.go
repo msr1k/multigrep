@@ -4,12 +4,15 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/koron/gomigemo/embedict"
 	"github.com/koron/gomigemo/migemo"
 )
 
 const version = "0.1.0"
+
+const separator = " "
 
 var flag_n = flag.Bool("n", false, "print line number with output lines")
 var flag_H = flag.Bool("H", false, "print the filename for each match")
@@ -55,19 +58,21 @@ func _main() int {
 		}
 	}
 
-	re, err := migemo.Compile(dict, flag.Arg(0))
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return 2
+	res := make( []PolarizedMultiMatcher, 0, 10 )
+	patterns := strings.Split(flag.Arg(0), separator)
+	for _, pat := range patterns {
+		re, err := migemo.Compile(dict, pat)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return 2
+		}
+		res = append( res, PolarizedMultiMatcher{ matcher: re, polar: true } )
 	}
 
 	opt := &grepOpt{
 		optNumber:   *flag_n,
 		optFilename: *flag_H || flag.NArg() > 2,
 	}
-
-	res := make( []PolarizedMultiMatcher, 1 )
-	res[0] = PolarizedMultiMatcher{ matcher: re, polar: true }
 
 	total := 0
 	// If there's only one arg, then we need to match against the input
