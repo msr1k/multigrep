@@ -5,7 +5,7 @@ import (
  )
 
 type MultiMatcher interface {
-	MatchString(pattern string) bool
+	MatchString(testee string) bool
 }
 
 type PolarizedMultiMatcher struct {
@@ -17,7 +17,7 @@ type StringMatcher struct {
 	str string
 }
 
-func (str StringMatcher) MatchString(pattern string) bool {
-	return strings.Contains( str.str, pattern )
+func (str StringMatcher) MatchString(testee string) bool {
+	return strings.Contains( testee, str.str )
 }
 
