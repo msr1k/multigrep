@@ -15,7 +15,7 @@ func init() {
 }
 
 // Does the grepping
-func grep(r io.Reader, m MultiMatcher, opt *grepOpt) (int, error) {
+func grep(r io.Reader, pmms []PolarizedMultiMatcher, opt *grepOpt) (int, error) {
 	buf := bufio.NewReader(r)
 	n := 1
 	count := 0
@@ -27,8 +27,15 @@ func grep(r io.Reader, m MultiMatcher, opt *grepOpt) (int, error) {
 			}
 			return 0, err
 		}
-		line := string(b)
-		if m.MatchString(line) {
+		line    := string(b)
+		matched := true
+		for _, pmm := range pmms {
+			if pmm.matcher.MatchString(line) != pmm.polar {
+				matched = false
+				break
+			}
+		}
+		if matched {
 			count++
 			if opt.optFilename {
 				fmt.Fprintf(out, "%s:", opt.filename)
@@ -37,6 +44,7 @@ func grep(r io.Reader, m MultiMatcher, opt *grepOpt) (int, error) {
 				fmt.Fprintf(out, "%d:", n)
 			}
 			fmt.Fprintln(out, line)
+			break
 		}
 		n++
 	}

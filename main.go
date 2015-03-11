@@ -66,12 +66,15 @@ func _main() int {
 		optFilename: *flag_H || flag.NArg() > 2,
 	}
 
+	res := make( []PolarizedMultiMatcher, 1 )
+	res[0] = PolarizedMultiMatcher{ matcher: re, polar: true }
+
 	total := 0
 	// If there's only one arg, then we need to match against the input
 	if flag.NArg() == 1 {
 		opt.filename = "stdin"
 
-		if total, err = grep(os.Stdin, re, opt); err != nil {
+		if total, err = grep(os.Stdin, res, opt); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return 2
 		}
@@ -88,7 +91,7 @@ func _main() int {
 
 			opt.filename = arg
 			var count int
-			if count, err = grep(f, re, opt); err != nil {
+			if count, err = grep(f, res, opt); err != nil {
 				fmt.Fprintln(os.Stderr, err)
 				return 2
 			}
