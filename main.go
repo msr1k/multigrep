@@ -27,7 +27,7 @@ func main() {
 
 func _main() int {
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "migemogrep v%s\n\nUsage: migemogrep [options] pattern [files...]\n", version)
+		fmt.Fprintf(os.Stderr, "multigrep v%s\n\nUsage: multigrep [options] pattern [files...]\n", version)
 		flag.PrintDefaults()
 	}
 	var dictPath = flag.String("d", "", "Alternate location to dictionary")
