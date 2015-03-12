@@ -3,59 +3,7 @@ multigrep
 
 A powerful text search/grep program.
 
-Note
-----
-
-Almost all of this program is copied from [migemogrep](https://github.com/peco/migemogrep) great program.
-
-This program works fine as a matcher of [peco](https://github.com/peco/peco)
-
-Matcher/Expression to control the way of serach
-----
-
-You can search/grep by using following matcher/expression.
-
-- Plain String Matcher (default)
-
-    Matches if the target string contains string of this matcher. 
-    (Has poor functionality but it must be fastest.)
-
-    This matcher is used if you omit the prefix.
-    You can also explicitly specify this matcher by using prefix `s:`.
-
-- Regular Expression Matcher
-
-     You can use regular expression matcher by adding prefix `r:`
-     and `i:` for case insensitive regular expression.
-
-- Migemo Matcher
-
-    Search Japanese text using latin-1 text by adding prefix `m:`.
-
-    To this feature use [gomigemo](https://github.com/koron/gomigemo).
-
-- Not Expression
-
-    Prefix `!` inverts the match result.
-    It should be placed before any of other matcher prefix.
-
-- Delimiter Expression
-
-    Space ` ` always works as a delimiter of patterns.
-    Delimitted patterns are evaluated as AND condition.
-
-    Use \s with Regular Expression Matcher,
-    If you want to search phrase which includes space ` `.
-
-Installation
-------------
-
-Currently there is no binary version.
-
-You need to install golang in advance, to build and install.
-Then you can get with following command.
-
-    $ go get github.com/msr1k/multigrep
+One of the intentions of this program is to use as a matcher of [peco](https://github.com/peco/peco).
 
 Usage
 -----
@@ -65,7 +13,9 @@ $ multigrep <pattern> <file>
 $ cat file.txt | multigrep <pattern>
 ```
 
-Example
+This program intoroduces kind of unique __prefix search control system__ to pattern expression.
+
+Taste
 ----
 
 1. To search string "some" from all text files in current directory.
@@ -92,7 +42,59 @@ Example
 
         multigrep "!i:some m:nani" *.txt
 
-6. To search string which contains "some food"
+6. To search string which contains "some stuff"
 
-        multigrep r:some\sfood *.txt
+        multigrep r:some\sstuff *.txt
+
+Details
+----
+
+You can controll search/grep by using following stuffs.
+
+- Plain String Matcher (default)
+
+    Matches if the target string contains string of this matcher.   
+    (Has poor functionality but it must be fastest.)
+
+    This matcher is used if you omit the prefix.  
+    You can also explicitly specify this matcher by using prefix `s:`.
+
+- Regular Expression Matcher
+
+     You can use regular expression matcher by adding prefix `r:`.  
+     And `i:` for case insensitive regular expression.
+
+- Migemo Matcher
+
+    Search Japanese text using latin-1 text by adding prefix `m:`.
+
+- Not
+
+    Prefix `!` inverts the match result.  
+    It should be placed before any of other matcher prefix.
+
+- Delimiter
+
+    ` `, space, always works as a delimiter of patterns.  
+    Each sub-patterns are connected as AND and evaluated.
+
+    Use \s with Regular Expression Matcher,  
+    If you want to search phrase which includes ` `.
+
+Installation
+------------
+
+Currently there is no binary version.
+
+You need to install golang in advance, to build and install.
+Then you can get with following command.
+
+    $ go get github.com/msr1k/multigrep
+
+Thanks
+----
+
+- Almost all of this program is copied from [migemogrep](https://github.com/peco/migemogrep).
+
+- Migemo Matcher is implemented in [gomigemo](https://github.com/koron/gomigemo).
 
