@@ -1,7 +1,14 @@
 multigrep
 ==========
 
-Powerful text search/grep program.
+A powerful text search/grep program.
+
+Note
+----
+
+Almost all of this program is copied from [migemogrep](https://github.com/peco/migemogrep) great program.
+
+This program works fine as a matcher of [peco](https://github.com/peco/peco)
 
 Matcher/Expression to control the way of serach
 ----
@@ -24,28 +31,31 @@ You can search/grep by using following matcher/expression.
 - Migemo Matcher
 
     Search Japanese text using latin-1 text by adding prefix `m:`.
-    (powered by github.com/koron/gomigemo)
+
+    To this feature use [gomigemo](https://github.com/koron/gomigemo).
 
 - Not Expression
 
     Prefix `!` inverts the match result.
     It should be placed before any of other matcher prefix.
 
-Installation (WIP)
+- Delimiter Expression
+
+    Space ` ` always works as a delimiter of patterns.
+    Delimitted patterns are evaluated as AND condition.
+
+    Use \s with Regular Expression Matcher,
+    If you want to search phrase which includes space ` `.
+
+Installation
 ------------
 
-Please visit our releases page, and download the appropriate version/platform:
+Currently there is no binary version.
 
-[https://github.com/peco/migemogrep/releases](https://github.com/peco/migemogrep/releases)
+You need to install golang in advance, to build and install.
+Then you can get with following command.
 
-Or, if you are on OS X and are using homebrew
-
-    $ brew tap peco/peco
-    $ brew install migemogrep
-
-And finally, if you want the latest bleeding edge version:
-
-    $ go get github.com/peco/migemogrep
+    $ go get github.com/msr1k/multigrep
 
 Usage
 -----
@@ -58,27 +68,31 @@ $ cat file.txt | multigrep <pattern>
 Example
 ----
 
-1. To search string "some" from all golang source code in current directory.
+1. To search string "some" from all text files in current directory.
 
-        multigrep some *.go
+        multigrep some *.txt
 
 2. To search string "Some" or "some".
 
-        multigrep r:[S|s]ome *.go
+        multigrep r:[S|s]ome *.txt
 
     or
 
-        multigrep i:some *.go
+        multigrep i:some *.txt
 
 3. To search Japanese string "何".
 
-        multigrep m:nani *.go
+        multigrep m:nani *.txt
 
 4. To search string which does not contain "some" or "Some".
 
-        multigrep !i:some *.go
+        multigrep !i:some *.txt
 
 5. To search string which does not contain "some" or "Some" but "何"
 
-        multigrep "!i:some m:nani" *.go
+        multigrep "!i:some m:nani" *.txt
+
+6. To search string which contains "some food"
+
+        multigrep r:some\sfood *.txt
 
