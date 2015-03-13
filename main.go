@@ -81,7 +81,7 @@ func _main() int {
 		case "s:": // String Contains
 			re = StringMatcher{ str: pat[2:] }
 		default:
-			re = StringMatcher{ str: pat }
+			re, err = regexp.Compile("(?i)" + pat)
 		}
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
