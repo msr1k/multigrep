@@ -71,18 +71,23 @@ func _main() int {
 
 		var re MultiMatcher 
 		var err error
-		switch pat[0:2] {
-		case "r:": // Regexp
-			re, err = regexp.Compile(pat[2:])
-		case "i:": // Ignorecase Regexp
-			re, err = regexp.Compile("(?i)" + pat[2:])
-		case "m:": // Migemo
-			re, err = migemo.Compile(dict, pat[2:])
-		case "s:": // String Contains
-			re = StringMatcher{ str: pat[2:] }
-		default:
+		if len(pat) > 2 {
+			switch pat[0:2] {
+			case "r:": // Regexp
+				re, err = regexp.Compile(pat[2:])
+			case "i:": // Ignorecase Regexp
+				re, err = regexp.Compile("(?i)" + pat[2:])
+			case "m:": // Migemo
+				re, err = migemo.Compile(dict, pat[2:])
+			case "s:": // String Contains
+				re = StringMatcher{ str: pat[2:] }
+			default:
+				re, err = regexp.Compile("(?i)" + pat)
+			}
+		} else {
 			re, err = regexp.Compile("(?i)" + pat)
 		}
+
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return 2
