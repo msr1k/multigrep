@@ -18,51 +18,53 @@ This program intoroduces kind of unique __prefix search control system__ to patt
 Taste
 ----
 
-1. To search string "some" from all text files in current directory.
+1. To search string which contains "some" or "Some" from all text files in current directory.
 
         multigrep some *.txt
 
-2. To search string "Some" or "some".
+2. To search string which contains "some".
 
-        multigrep r:[S|s]ome *.txt
+        multigrep r:some *.txt
 
     or
 
-        multigrep i:some *.txt
+        multigrep s:some *.txt
 
-3. To search Japanese string "何".
+3. To search string which contains Japanese "何".
 
         multigrep m:nani *.txt
 
 4. To search string which does not contain "some" or "Some".
 
-        multigrep !i:some *.txt
+        multigrep !some *.txt
 
-5. To search string which does not contain "some" or "Some" but "何"
+5. To search string which does not contain "some" but "何"
 
-        multigrep "!i:some m:nani" *.txt
+        multigrep "!s:some m:nani" *.txt
 
 6. To search string which contains "some stuff"
 
-        multigrep r:some\sstuff *.txt
+        multigrep some\sstuff *.txt
 
 Details
 ----
 
 You can controll search/grep by using following stuffs.
 
-- Plain String Matcher (default)
+- Plain String Matcher
 
+    You can use string matcher by adding prefix `s:`.  
     Matches if the target string contains string of this matcher.   
     (Has poor functionality but it must be fastest.)
 
-    This matcher is used if you omit the prefix.  
-    You can also explicitly specify this matcher by using prefix `s:`.
+- Case Sensitive Regular Expression Matcher
 
-- Regular Expression Matcher
+    You can use case sensitive regular expression matcher by adding prefix `r:`.
 
-     You can use regular expression matcher by adding prefix `r:`.  
-     And `i:` for case insensitive regular expression.
+- Case Insensitive Regular Expression Matcher __(default matcher)__
+
+    You can use case insensitive regular expression matcher by adding prefix `i:`.  
+    If you omit the prefix, this matcher is used.
 
 - Migemo Matcher
 
@@ -78,8 +80,8 @@ You can controll search/grep by using following stuffs.
     ` `, space, always works as a delimiter of patterns.  
     Each sub-patterns are connected as AND and evaluated.
 
-    Use \s with Regular Expression Matcher,  
-    If you want to search phrase which includes ` `.
+    Use \s If you want to search phrase which includes ` `.  
+    (You need to use Regular Expression Matcher)
 
 Installation
 ------------
